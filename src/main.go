@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"github.com/redisgo/intenal/proto"
 	"log"
 	"net"
 	"strings"
@@ -59,7 +60,10 @@ func main() {
 	br := bufio.NewReader(tcpconn)
 	bw := bufio.NewWriter(tcpconn)
 
-	command := getCommand("mget", "test", "test2", "test3")
+	//command := getCommand("mget", "test", "test2", "test3")
+    //command := getCommand("set", "test", "2")
+    //command := getCommand("get", "htest")
+    command := getCommand("incr", "1")
 	//len, err := tcpconn.Write([]byte(command))
 	len, err := bw.WriteString(command)
 	if err != nil {
@@ -68,16 +72,18 @@ func main() {
 	log.Println("write len :", len, err, command)
 	bw.Flush()
 
-	buf := make([]byte, 1024)
-	rlen, err := br.Read(buf)
-	//rlen, err := tcpconn.Read(buf)
+	//buf := make([]byte, 1024)
+	//rlen, err := br.Read(buf)
+	parser := proto.NewReplyParser(br)
+	err = parser.ParseReply()
 	if err != nil {
 		log.Print("read failed : ", err.Error())
 	}
+
 	//parseReplay(buf)
 
-	log.Print("read result : ", rlen)
-	log.Print("read result : ", string(buf))
+	//log.Print("read result : ", rlen)
+	//log.Print("read result : ", string(buf))
 }
 
 func getCommand(com string, params ...string) string {
