@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"github.com/redisgo/intenal/proto"
 	"log"
 	"net"
@@ -11,6 +12,7 @@ import (
 )
 
 const (
+    //loop address
 	address = "127.0.0.1"
 	port    = "6379"
 )
@@ -61,10 +63,11 @@ func main() {
 	bw := bufio.NewWriter(tcpconn)
 
 	//command := getCommand("mget", "test", "test2", "test3")
-    //command := getCommand("set", "test", "2")
-    //command := getCommand("get", "htest")
-    command := getCommand("incr", "1")
+	//command := getCommand("set", "test", "2")
+	//command := getCommand("get", "htest")
+	command := getCommand("incr", "test")
 	//len, err := tcpconn.Write([]byte(command))
+	fmt.Println("command : ", command)
 	len, err := bw.WriteString(command)
 	if err != nil {
 		log.Print("write err :", err.Error())
