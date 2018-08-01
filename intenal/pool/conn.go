@@ -1,6 +1,10 @@
 package pool
 
-import "net"
+import (
+	"net"
+	"time"
+	"bufio"
+)
 
 /**
 1. tcp的连接参数
@@ -20,6 +24,19 @@ type Conn struct {
 	iNumConsumedu int32 //使用次数
 
 	conn net.Conn
+
+
+	pending int
+	err error
+	readTimeout time.Duration
+	br *bufio.Reader
+
+
+	writeTimeout time.Duration
+	bw *bufio.Writer
+
+	lenScratch [32]byte
+	numScratch [40]byte
 }
 
 func (this *Conn) Do() (interface{}, error) {

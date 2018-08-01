@@ -1,5 +1,8 @@
 package main
 
+
+// redisgo doc
+
 import (
 	"bufio"
 	"bytes"
@@ -28,7 +31,7 @@ type DialOptions struct {
 	WriteBufferSize int           //采用系统默认
 	KeepAlive       bool          //是否设置keepalive
 	KeepAlivePeriod time.Duration //保存时间
-	NoDelay         bool          //是否开启nodelay算法ß
+	NoDelay         bool          //是否开启nodelay算法
 }
 
 //create tcp connection
@@ -37,7 +40,7 @@ type DialOptions struct {
 
 //parse The Output
 
-//
+//main
 func main() {
 	raddr, err := net.ResolveTCPAddr("tcp4", address+":"+port)
 	if err != nil {
@@ -53,11 +56,12 @@ func main() {
 
 	//tcpconn.SetKeepAlive(true)
 	//tcpconn.SetKeepAlivePeriod(time.Second)
-	//tcpconn.SetReadDeadline(time.Now().Add(time.Second))
-	//tcpconn.SetWriteDeadline(time.Now().Add(time.Second))
-	//tcpconn.SetReadBuffer(128)
-	//tcpconn.SetWriteBuffer(128)
+	tcpconn.SetReadDeadline(time.Now().Add(time.Second))
+	tcpconn.SetWriteDeadline(time.Now().Add(time.Second))
+	tcpconn.SetReadBuffer(128)
+	tcpconn.SetWriteBuffer(128)
 	//tcpconn.SetNoDelay(true)
+	//tcpconn.SetLinger(1)
 
 	br := bufio.NewReader(tcpconn)
 	bw := bufio.NewWriter(tcpconn)
@@ -75,6 +79,8 @@ func main() {
 	log.Println("write len :", len, err, command)
 	bw.Flush()
 
+
+	time.Sleep(time.Second * 20)
 	//buf := make([]byte, 1024)
 	//rlen, err := br.Read(buf)
 	parser := proto.NewReplyParser(br)

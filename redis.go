@@ -1,16 +1,16 @@
 package redisgo
 
+
+
 type RedisClient struct {
 }
 
 //getConn从连接池获取一个新的连接
 func (this *RedisClient) getConn() {
-
 }
 
 //Do 执行redis方法
 func (this *RedisClient) Do() {
-
 }
 
 //Do 执行redis方法
